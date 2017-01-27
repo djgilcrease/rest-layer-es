@@ -104,6 +104,9 @@ func translateQuery(q schema.Query) ([]elastic.Query, error) {
 			r := elastic.NewRangeQuery(getField(t.Field))
 			r.Lte(t.Value)
 			qs = append(qs, r)
+		case schema.Regex:
+			r := elastic.NewRegexpQuery(getField(t.Field), t.Value.String())
+			qs = append(qs, r)
 		default:
 			return nil, resource.ErrNotImplemented
 		}
